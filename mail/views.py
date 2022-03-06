@@ -76,6 +76,8 @@ def mailbox(request, mailbox):
 
 # this should be deleted
 def compose_view(request):
+    if not request.user.is_authenticated:
+        return redirect(reverse('mail:login'))
     form = ComposeForm(request.POST or None)
     context = {
         'form': form,
@@ -229,7 +231,7 @@ def register_view(request):
 
 # @login_required(login_url=reverse('mail:login'))
 def logout_view(request):
-    logout(request.user)
+    logout(request)
     
     return redirect(reverse('mail:index'))
 

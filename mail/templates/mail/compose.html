@@ -7,7 +7,7 @@ Compose
 
 {% block body %} 
 <div class="container">
-    <form class="form-control" action="{% url 'mail:compose_view' %}" method="post">
+    <form action="{% url 'mail:compose_view' %}" method="post">
         {% csrf_token %} 
         {{ form|crispy }}
         <button class="btn btn-primary" type="submit">Send</button>

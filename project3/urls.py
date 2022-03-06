@@ -18,9 +18,9 @@ from django.urls import path, include
 from mail.views import index_view
 
 
-# app_name = 'main'
+app_name = 'main'
 urlpatterns = [
     path('', index_view, name='index'),
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls, name='admin'),
     path('mail/', include('mail.urls')),
 ]
