@@ -5,5 +5,9 @@ class EmailAdmin(admin.ModelAdmin):
     model = Email
     list_display = ['subject', 'timestamp', 'sender']
 
-admin.site.register(User)
+class UserAdmin(admin.ModelAdmin):
+    model = User
+    list_display = ['username', 'email']
+
+admin.site.register(User, UserAdmin)
 admin.site.register(Email, EmailAdmin)

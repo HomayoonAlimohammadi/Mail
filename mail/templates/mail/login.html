@@ -6,9 +6,11 @@ Login
 {% endblock %} 
 
 {% block body %} 
-<div class="form-control" action=".">
+<div class="container">
+<form action="{% url 'mail:login' %}" method="post">
     {% csrf_token %} 
     {{ form|crispy }}
-    <input class="btn btn-priamry" type="button">
+    <button class="btn btn-primary">Login</button>
+</form>
 </div>
 {% endblock %} 

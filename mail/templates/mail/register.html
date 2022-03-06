@@ -6,9 +6,11 @@ Register
 {% endblock %} 
 
 {% block body %} 
-<div class="form-control" action=".">
+<div class="container">
+<form action="{% url 'mail:register' %}" method="post">
     {% csrf_token %} 
     {{ form|crispy }}
-    <input class="btn btn-primary" type="button">
+    <button class="btn btn-primary">Register</button>
+</form>
 </div>
 {% endblock %} 
