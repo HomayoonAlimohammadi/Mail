@@ -8,7 +8,7 @@ class Email(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='emails')
     subject = models.CharField(max_length=220)
     recipients = models.ManyToManyField(User, related_name='emails_recieved')
-    sender = models.ForeignKey(User, on_delete=models.PROTECT, related_name='emails_sent')
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='emails_sent')
     content = models.TextField()
     timestamp = models.DateField(auto_now_add = True)
     is_archived = models.BooleanField(default=False)

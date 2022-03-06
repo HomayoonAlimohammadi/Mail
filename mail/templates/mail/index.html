@@ -1,6 +1,10 @@
 {% extends 'mail/layout.html' %}
 {% load static %} 
 
+{% block title %} 
+Email 
+{% endblock %} 
+
 {% block head %} 
 <script src="{% static 'mail/index.js' %}"></script>
 {% endblock %} 
@@ -8,6 +12,6 @@
 
 {% block body %} 
   <div id='main_body' class="container py-5">
-
+    
   </div>  
 {% endblock %} 

@@ -1,0 +1,16 @@
+{% extends 'mail/layout.html' %} 
+
+{% block title %} 
+MailBox
+{% endblock %} 
+
+
+{% block body %} 
+<ul class="list-group">
+    {% for email in emails %} 
+    <li class="list-item">
+        <a href='.'>{{ email.subject }}</a> 
+    </li>
+
+</ul>
+{% endblock %} 

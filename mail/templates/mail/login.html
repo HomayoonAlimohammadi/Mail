@@ -1,0 +1,14 @@
+{% extends 'mail/layout.html' %} 
+{% load crispy_forms_tags %} 
+
+{% block title %} 
+Login 
+{% endblock %} 
+
+{% block body %} 
+<div class="form-control" action=".">
+    {% csrf_token %} 
+    {{ form|crispy }}
+    <input class="btn btn-priamry" type="button">
+</div>
+{% endblock %} 
