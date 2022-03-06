@@ -7,6 +7,6 @@ urlpatterns = [
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
     path('register/', register_view, name='register'),
-    path('compose/', compose_view, name='compose'),
+    path('compose/', compose_view, name='compose_view'),
     path('<str:mailbox>/', mailbox, name='mailbox'),
 ]

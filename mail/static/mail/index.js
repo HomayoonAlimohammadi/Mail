@@ -1,14 +1,28 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    document.querySelector('#inbox').onclick = () => {
+    document.querySelector('#inbox').onclick = show_inbox;
+    document.querySelector('#compose').onclick = show_compose;
+    document.querySelector('#sent').onclick = show_sent;
+    document.querySelector('#archived').onclick = show_archived;
+    document.querySelector('#register').onclick = show_register;
+    document.querySelector('#login').onclick = show_login;
+    document.querySelector('#logout').onclick = show_logout;
+
+
+    function show_inbox() {
         const main_body = document.querySelector('#main_body');
         main_body.innerHTML = '';
         const h1 = document.createElement('h1');
         h1.innerHTML = 'This is Inbox';
         main_body.append(h1);
+        fetch('mail/email/inbox/')
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+        });
     }
 
-    document.querySelector('#compose').onclick = () => {
+    function show_compose() {
         const main_body = document.querySelector('#main_body');
         main_body.innerHTML = '';
         const h1 = document.createElement('h1');
@@ -16,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         main_body.append(h1);
     }
 
-    document.querySelector('#sent').onclick = () => {
+    function show_sent() {
         const main_body = document.querySelector('#main_body');
         main_body.innerHTML = '';
         const h1 = document.createElement('h1');
@@ -24,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         main_body.append(h1);
     }
 
-    document.querySelector('#archived').onclick = () => {
+    function show_archived() {
         const main_body = document.querySelector('#main_body');
         main_body.innerHTML = '';
         const h1 = document.createElement('h1');
@@ -32,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
         main_body.append(h1);
     }
 
-    document.querySelector('#register').onclick = () => {
+    function show_register() {
         const main_body = document.querySelector('#main_body');
         main_body.innerHTML = '';
         const h1 = document.createElement('h1');
@@ -40,11 +54,20 @@ document.addEventListener('DOMContentLoaded', () => {
         main_body.append(h1);
     }
 
-    document.querySelector('#login').onclick = () => {
+    function show_login() {
         const main_body = document.querySelector('#main_body');
         main_body.innerHTML = '';
         const h1 = document.createElement('h1');
         h1.innerHTML = 'This is Login';
         main_body.append(h1);
     }
+
+    function show_logout() {
+        const main_body = document.querySelector('#main_body');
+        main_body.innerHTML = '';
+        const h1 = document.createElement('h1');
+        h1.innerHTML = 'This is Logout';
+        main_body.append(h1);
+    }
+
 });

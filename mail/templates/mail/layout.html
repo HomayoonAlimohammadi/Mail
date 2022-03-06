@@ -36,27 +36,27 @@
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                   <li class="nav-item">
-                    <a id='inbox' data-link="inbox" class="btn btn-outline-info" aria-current="page" href="#">Inbox</a>
+                    <a id='inbox1' data-link="inbox" class="btn btn-outline-info" aria-current="page" href="#">Inbox</a>
                   </li>
                   <li class="nav-item">
-                    <a id='compose' data-link="compose" class="btn btn-outline-info" aria-current="page" href="#">Compose</a>
+                    <a id='compose1' data-link="compose" class="btn btn-outline-info" aria-current="page" href="{% url 'mail:compose_view' %}">Compose</a>
                   </li>
                   <li class="nav-item">
-                    <a  id="sent" data-link="sent" class="btn btn-outline-info" aria-current="page" href="#">Sent</a>
+                    <a  id="sent1" data-link="sent" class="btn btn-outline-info" aria-current="page" href="#">Sent</a>
                   </li>
                   <li class="nav-item">
-                    <a  id="archived" data-link="archived" class="btn btn-outline-info" aria-current="page" href="#">Archived</a>
+                    <a  id="archived1" data-link="archived" class="btn btn-outline-info" aria-current="page" href="#">Archived</a>
                   </li>
                   <li class="nav-item">
-                    <a  id="register" data-link="login" class="btn btn-outline-info" aria-current="page" href="{% url 'mail:register' %}">Register</a>
+                    <a  id="register1" data-link="register" class="btn btn-outline-info" aria-current="page" href="{% url 'mail:register' %}">Register</a>
                   </li>
                   {% if requset.user.is_authenticatd %} 
                   <li class="nav-item">
-                    <a  id="logout" data-link="logout" class="btn btn-outline-info" aria-current="page" href="{% url 'mail:logout' %}">Logout</a>
+                    <a  id="logout1" data-link="logout" class="btn btn-outline-info" aria-current="page" href="{% url 'mail:logout' %}">Logout</a>
                   </li>
                   {% else %} 
                   <li class="nav-item">
-                    <a  id="login" data-link="login" class="btn btn-outline-info" aria-current="page" href="{% url 'mail:login' %}">Login</a>
+                    <a  id="login1" data-link="login" class="btn btn-outline-info" aria-current="page" href="{% url 'mail:login' %}">Login</a>
                   </li>
                   {% endif %}
                   
@@ -67,13 +67,19 @@
           </nav>
 
           <!-- Messages -->
-          {% if messages %} 
-          {% for message in messages %} 
-          <p>{{ message }}</p>
+
+          {% for message in messages %}
+          <div class="container p-0">
+            <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          </div>
           {% endfor %} 
-          {% endif %} 
 
         {% block body %} 
         {% endblock %}
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
     </body>
 </html>

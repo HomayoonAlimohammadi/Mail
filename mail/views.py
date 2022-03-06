@@ -85,12 +85,12 @@ def compose_view(request):
             subject = form.cleaned_data['subject']
             if subject is None:
                 messages.error(request, 'Subject can not be empty.')
-                return redirect(reverse('mail:compose'))
+                return redirect(reverse('mail:compose_view'))
             content = form.cleaned_data['content']
             emails = [email.strip() for email in form.cleaned_data['recipients'].split(',')]
             if not emails:
                 messages.error(request, 'Recipients can not be empty.')
-                return redirect(reverse('mail:compose'))
+                return redirect(reverse('mail:compose_view'))
 
             recipients = []
             for email in emails:
@@ -100,7 +100,7 @@ def compose_view(request):
                     )
                 except User.DoesNotExist:
                     messages.error(request, 'Invalid emails in recipients.')
-                    return redirect(reverse('mail:compose'))
+                    return redirect(reverse('mail:compose_view'))
 
                 recipients.append(user)
             
@@ -189,7 +189,8 @@ def login_view(request):
         if form.is_valid():
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
-            user = authenticate(request, email=email, password=password)
+            user = authenticate(username=email, password=password)
+            print(user)
             if user:
                 messages.success(request, f'Logged in as {email}')
                 login(request, user)
@@ -213,8 +214,9 @@ def register_view(request):
             if password != confirmation:
                 messages.error(request, 'Password does not match.')
                 return redirect(reverse('mail:register'))
-            user = User.objects.create(
+            user = User.objects.create_user(
                 username = email,
+                email = email,
                 password = password,
             )
             user.save()
