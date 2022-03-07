@@ -50,14 +50,13 @@ def mailbox(request, mailbox):
 
     elif mailbox == 'sent':
         emails = Email.objects.filter(
-            user= request.user,
+            user= user,
             sender=user, 
             is_archived=False,
         )
     
     elif mailbox == 'archived':
         emails = Email.objects.filter(
-            sender = user, 
             is_archived = True,
             user= request.user,
         )
@@ -255,13 +254,16 @@ def email_view(request, id):
 
 
 def delete_email_view(request, id):
+    email = get_object_or_404(Email, id=id)
+    context = {
+        'email': email,
+    }
     if request.method == 'POST':
-        email = get_object_or_404(Email, id=id)
         email.delete()
         messages.success(request, 'Email was deleted successfully.')
         return redirect(reverse('mail:index'))
     
-    return render(request, 'mail/delete.html')
+    return render(request, 'mail/delete.html', context)
     
 
 def toggle_archive_email_view(request, id):

@@ -1,0 +1,18 @@
+{% extends 'mail/layout.html' %} 
+
+{% block title %} 
+Delete Email 
+{% endblock %} 
+
+
+{% block body %}
+
+<div class="container" style="text-align: center;">
+    <p>Are you sure you want to Delete this Email?</p>
+        <form action="{% url 'mail:delete' email.id %}" method="post">
+            {% csrf_token %} 
+            <button type="submit" class="btn btn-primary">Yes</button>
+            <a href="{% url 'mail:index' %}"><button type="button" class="btn btn-outline-primary">No</button></a>
+        </form>
+</div>
+{% endblock %} 
