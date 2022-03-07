@@ -41,7 +41,10 @@
               <a id='admin' class="btn btn-outline-info" aria-current="page" href="{% url 'admin:index' %}">Admin</a>
             </li>
             <li class="nav-item">
-              <a id='inbox1' data-link="inbox" class="btn btn-outline-info" aria-current="page" href="{% url 'mail:mailbox' 'inbox' %}">Inbox</a>
+              <a data-link="inbox" class="btn btn-outline-info" aria-current="page" href="{% url 'mail:mailbox' 'inbox' %}">Inbox</a>
+            </li>
+            <li class="nav-item">
+              <button id='inbox' data-link="inbox" class="btn btn-outline-warning" aria-current="page">Inbox</button>
             </li>
             <li class="nav-item">
               <a id='compose1' data-link="compose" class="btn btn-outline-info" aria-current="page" href="{% url 'mail:compose_view' %}">Compose</a>

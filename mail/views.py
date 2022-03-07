@@ -1,7 +1,7 @@
 import json
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from .forms import ComposeForm, LoginForm, RegisterForm
 from .models import Email, User
 from django.contrib.auth.decorators import login_required
@@ -61,19 +61,55 @@ def mailbox(request, mailbox):
             user= request.user,
         )
     else:
-        return JsonResponse(
-            {'error': 'Invalid Mailbox.'},
-            status=400,
+        return JsonResponse({"error": "Invalid mailbox."}, status=400)
+
+    emails = emails.order_by('-timestamp').all()
+    return JsonResponse([email.serialize() for email in emails], safe=False)
+    # return JsonResponse(context, safe=False)
+
+
+
+def mailbox_view(request, mailbox):
+    if not request.user.is_authenticated:
+        return redirect(reverse('mail:login'))
+
+    if request.method != 'GET':
+        context = {
+            'error': 'Request must be GET' 
+        }
+        status = 400
+        return JsonResponse(context=context, status=status)
+    
+    user = request.user
+    if mailbox == 'inbox':
+        emails = Email.objects.filter(
+            user = request.user,
+            is_archived=False,
         )
+
+    elif mailbox == 'sent':
+        emails = Email.objects.filter(
+            user= user,
+            sender=user, 
+            is_archived=False,
+        )
+    
+    elif mailbox == 'archived':
+        emails = Email.objects.filter(
+            is_archived = True,
+            user= request.user,
+        )
+    else:
+        raise Http404
 
     emails = [email.serialize() for email in emails.order_by('-timestamp').all()]
 
     context = {
         'emails': emails
     }
-    print([email.get('id') for email in emails])
     return render(request, 'mail/mailbox.html', context)
     # return JsonResponse(context, safe=False)
+
 
 # this should be deleted
 def compose_view(request):

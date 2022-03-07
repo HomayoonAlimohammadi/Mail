@@ -11,5 +11,8 @@ urlpatterns = [
     path('email/<int:id>', email_view, name='email'),
     path('email/<int:id>/delete/', delete_email_view, name='delete'),
     path('email/<int:id>/toggle_archive/', toggle_archive_email_view, name='toggle_archive'),
-    path('<str:mailbox>/', mailbox, name='mailbox'),
+    path('<str:mailbox>/', mailbox_view, name='mailbox'),
+
+    # API Views
+    path('api/email/<str:mailbox>', mailbox, name='api_mailbox'),
 ]
