@@ -21,6 +21,6 @@ from mail.views import index_view
 app_name = 'main'
 urlpatterns = [
     path('', index_view, name='index'),
-    path('admin/', admin.site.urls, name='admin'),
+    path('admin/', admin.site.urls),
     path('mail/', include('mail.urls')),
 ]

@@ -13,7 +13,7 @@ class ComposeForm(forms.ModelForm):
     recipients = forms.CharField(max_length=1000)
 
 class LoginForm(forms.Form):
-    email = forms.CharField(max_length=100)
+    username = forms.CharField(max_length=100)
     password = forms.CharField(min_length=8, max_length=100)
 
 

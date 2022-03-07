@@ -8,6 +8,8 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.contrib.auth import logout, authenticate, login
 from django.contrib import messages
+from django.shortcuts import get_object_or_404
+
 
 
 
@@ -43,7 +45,6 @@ def mailbox(request, mailbox):
     if mailbox == 'inbox':
         emails = Email.objects.filter(
             user = request.user,
-            recipients = user,
             is_archived=False,
         )
 
@@ -56,7 +57,7 @@ def mailbox(request, mailbox):
     
     elif mailbox == 'archived':
         emails = Email.objects.filter(
-            Q(sender=user) | Q(recipients=user), 
+            sender = user, 
             is_archived = True,
             user= request.user,
         )
@@ -66,11 +67,12 @@ def mailbox(request, mailbox):
             status=400,
         )
 
-    emails = [email.serialize() for email in emails.order_by('-timestramp').all()]
+    emails = [email.serialize() for email in emails.order_by('-timestamp').all()]
 
     context = {
         'emails': emails
     }
+    print([email.get('id') for email in emails])
     return render(request, 'mail/mailbox.html', context)
     # return JsonResponse(context, safe=False)
 
@@ -108,12 +110,12 @@ def compose_view(request):
             
             users = set()
             users.add(request.user)
-            users.update(emails)
+            users.update(recipients)
             for user in users:
                 email = Email(
                     subject = subject,
                     content = content,
-                    user = request.user,
+                    user = user,
                     sender = request.user,  
                     is_read = request.user == user  
                 )    
@@ -189,12 +191,12 @@ def login_view(request):
     form = LoginForm(request.POST or None)
     if request.method == 'POST':
         if form.is_valid():
-            email = form.cleaned_data['email']
+            username = form.cleaned_data['username']
             password = form.cleaned_data['password']
-            user = authenticate(username=email, password=password)
+            user = authenticate(username=username, password=password)
             print(user)
             if user:
-                messages.success(request, f'Logged in as {email}')
+                messages.success(request, f'Logged in as {username}')
                 login(request, user)
                 return redirect(reverse('mail:index'))
             else:
@@ -216,12 +218,15 @@ def register_view(request):
             if password != confirmation:
                 messages.error(request, 'Password does not match.')
                 return redirect(reverse('mail:register'))
+            username = email.split('@')[0]
             user = User.objects.create_user(
-                username = email,
+                username = username,
                 email = email,
                 password = password,
             )
             user.save()
+            user = authenticate(username=username, password=password)
+            login(request, user)
             messages.success(request, 'Email was created successfully.')
             return redirect(reverse('mail:index'))
     context = {
@@ -231,9 +236,44 @@ def register_view(request):
 
 # @login_required(login_url=reverse('mail:login'))
 def logout_view(request):
-    logout(request)
+    if request.method == 'POST':
+        logout(request)
+        return redirect(reverse('mail:index'))
     
-    return redirect(reverse('mail:index'))
+    return render(request, 'mail/logout.html')
+
+
+def email_view(request, id):
+    email = get_object_or_404(Email, id=id)
+    context = {
+        'email': email
+    }        
+    return render(request, 'mail/email.html', context)
+
+
+def delete_email_view(request, id):
+    if request.method == 'POST':
+        email = get_object_or_404(Email, id=id)
+        email.delete()
+        messages.success(request, 'Email was deleted successfully.')
+        return redirect(reverse('mail:index'))
+    
+    return render(request, 'mail/delete.html')
+    
+
+def toggle_archive_email_view(request, id):
+    email = get_object_or_404(Email, id=id)
+    if email.is_archived == True:
+        messages.info(request, 'Email was Unarchived')
+        email.is_archived = False
+    else:
+        messages.info(request, 'Email was Archived')
+        email.is_archived = True
+    return redirect(reverse('mail:email', args=[id]))
+    
+
+    
+    
 
 
 

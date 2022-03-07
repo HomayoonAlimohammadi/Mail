@@ -16,6 +16,7 @@ class Email(models.Model):
 
     def serialize(self):
         context = {
+            'id': self.id,
             'subject': self.subject,
             'recipients': self.recipients,
             'sender': self.sender,

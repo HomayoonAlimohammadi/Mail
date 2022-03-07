@@ -1,0 +1,26 @@
+{% extends 'mail/layout.html' %} 
+
+{% block title %} 
+Email {{ email.id }} 
+{% endblock %} 
+
+{% block body %} 
+<div class="container py-3">
+    <h5>Subject: {{ email.subject }}</h5>
+    <p><strong>From: </strong>{{ email.sender }}</p>
+    <p><strong>To: </strong>
+    {% for recipient in email.recipients.all %} 
+    {{ recipient.email }}
+    {% endfor %}
+    </p>
+    <strong>Content:</strong> <p>{{ email.content }}</p>
+    <hr/>
+    <p>Sent at: {{ email.timestamp }}</p>
+    {% if email.archived %} 
+    <a href="{% url 'mail:toggle_archive' email.id %}"><button type="button" class="btn btn-primary">Unarchive</button></a>
+    {% else %} 
+    <a href="{% url 'mail:toggle_archive' email.id %}"><button type="button" class="btn btn-primary">Archive</button></a>
+    {% endif %}
+    <a href="{% url 'mail:delete' email.id %}"><button type="button" class="btn btn-primary">Delete</button></a>
+</div>
+{% endblock %} 

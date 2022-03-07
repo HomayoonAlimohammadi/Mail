@@ -6,11 +6,18 @@ MailBox
 
 
 {% block body %} 
-<ul class="list-group">
-    {% for email in emails %} 
-    <li class="list-item">
-        <a href='.'>{{ email.subject }}</a> 
-    </li>
-
-</ul>
+<div class="container py-3">
+    <ul class="list-group">
+        {% for email in emails %} 
+        <li class="list-item">
+            <a href="{% url 'mail:email' email.id %}">{{ email.subject }}</a> 
+        </li>
+        {% empty %} 
+        <li class="list-item">
+            No mails in this mailbox.
+        </li>
+        {% endfor %}
+    
+    </ul>
+</div>
 {% endblock %} 
