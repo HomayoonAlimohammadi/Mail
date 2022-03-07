@@ -16,7 +16,7 @@ Email {{ email.id }}
     <strong>Content:</strong> <p>{{ email.content }}</p>
     <hr/>
     <p>Sent at: {{ email.timestamp }}</p>
-    {% if email.archived %} 
+    {% if email.is_archived %} 
     <a href="{% url 'mail:toggle_archive' email.id %}"><button type="button" class="btn btn-primary">Unarchive</button></a>
     {% else %} 
     <a href="{% url 'mail:toggle_archive' email.id %}"><button type="button" class="btn btn-primary">Archive</button></a>

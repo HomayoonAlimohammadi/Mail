@@ -3,7 +3,7 @@ from .models import Email, User
 
 class EmailAdmin(admin.ModelAdmin):
     model = Email
-    list_display = ['id', 'subject', 'timestamp', 'sender']
+    list_display = ['id', 'subject', 'timestamp', 'user','sender']
 
 class UserAdmin(admin.ModelAdmin):
     model = User

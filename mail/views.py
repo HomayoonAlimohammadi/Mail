@@ -102,6 +102,9 @@ def compose_view(request):
                     user = User.objects.get(
                         email=email
                     )
+                    if user == request.user:
+                        messages.error(request, 'Can not put your own email in recipients.')
+                        return redirect(reverse('mail:compose_view'))
                 except User.DoesNotExist:
                     messages.error(request, 'Invalid emails in recipients.')
                     return redirect(reverse('mail:compose_view'))
@@ -125,7 +128,7 @@ def compose_view(request):
                 email.save()
             
             messages.success(request, 'Mail has been sent successfully.')
-            return redirect(reverse('mail:index'))
+            return redirect(reverse('mail:mailbox', args=['inbox']))
     return render(request, 'mail/compose.html', context)
 
 
@@ -266,9 +269,11 @@ def toggle_archive_email_view(request, id):
     if email.is_archived == True:
         messages.info(request, 'Email was Unarchived')
         email.is_archived = False
+        email.save()
     else:
         messages.info(request, 'Email was Archived')
         email.is_archived = True
+        email.save()
     return redirect(reverse('mail:email', args=[id]))
     
 
