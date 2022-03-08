@@ -14,16 +14,16 @@ from django.shortcuts import get_object_or_404
 
 
 def index_view(request):
-    return render(request, 'mail/index.html')
+    compose_form = ComposeForm()
+    login_form = LoginForm()
+    register_form = RegisterForm()
+    context = {
+        'compose_form': compose_form,
+        'login_form': login_form,
+        'register_form': register_form,
+    }
+    return render(request, 'mail/index.html', context)
 
-    # if request.user.is_authenticated:
-    #     compose_form = ComposeForm()
-    #     context = {
-    #         'compose_form': compose_form,
-    #     }
-    #     return render(request, 'mail/index.html')
-    # else:
-    #     return redirect(reverse('mail:login'))
 
 
 
@@ -44,8 +44,10 @@ def mailbox(request, mailbox):
     user = request.user
     if mailbox == 'inbox':
         emails = Email.objects.filter(
-            user = request.user,
+            user = user,
             is_archived=False,
+        ).exclude(
+            sender = user
         )
 
     elif mailbox == 'sent':
@@ -58,7 +60,7 @@ def mailbox(request, mailbox):
     elif mailbox == 'archived':
         emails = Email.objects.filter(
             is_archived = True,
-            user= request.user,
+            user= user,
         )
     else:
         return JsonResponse({"error": "Invalid mailbox."}, status=400)
@@ -68,47 +70,6 @@ def mailbox(request, mailbox):
     # return JsonResponse(context, safe=False)
 
 
-
-def mailbox_view(request, mailbox):
-    if not request.user.is_authenticated:
-        return redirect(reverse('mail:login'))
-
-    if request.method != 'GET':
-        context = {
-            'error': 'Request must be GET' 
-        }
-        status = 400
-        return JsonResponse(context=context, status=status)
-    
-    user = request.user
-    if mailbox == 'inbox':
-        emails = Email.objects.filter(
-            user = request.user,
-            is_archived=False,
-        )
-
-    elif mailbox == 'sent':
-        emails = Email.objects.filter(
-            user= user,
-            sender=user, 
-            is_archived=False,
-        )
-    
-    elif mailbox == 'archived':
-        emails = Email.objects.filter(
-            is_archived = True,
-            user= request.user,
-        )
-    else:
-        raise Http404
-
-    emails = [email.serialize() for email in emails.order_by('-timestamp').all()]
-
-    context = {
-        'emails': emails
-    }
-    return render(request, 'mail/mailbox.html', context)
-    # return JsonResponse(context, safe=False)
 
 
 # this should be deleted

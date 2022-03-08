@@ -41,19 +41,16 @@
               <a id='admin' class="btn btn-outline-info" aria-current="page" href="{% url 'admin:index' %}">Admin</a>
             </li>
             <li class="nav-item">
-              <a data-link="inbox1" class="btn btn-outline-info" aria-current="page" href="{% url 'mail:mailbox' 'inbox' %}">Inbox</a>
+              <button id='inbox' data-link="{% url 'mail:api_mailbox' 'inbox' %}" class="btn btn-outline-warning" aria-current="page">Inbox</button>
             </li>
             <li class="nav-item">
-              <button id='inbox' data-link="inbox" class="btn btn-outline-warning" aria-current="page">Inbox</button>
+              <button id='compose' class="btn btn-outline-warning" aria-current="page">Compose</button>
             </li>
             <li class="nav-item">
-              <a id='compose1' data-link="compose" class="btn btn-outline-info" aria-current="page" href="{% url 'mail:compose_view' %}">Compose</a>
+              <button id="sent" class="btn btn-outline-warning" aria-current="page" data-link="{% url 'mail:api_mailbox' 'sent' %}">Sent</button>
             </li>
             <li class="nav-item">
-              <a  id="sent1" data-link="sent" class="btn btn-outline-info" aria-current="page" href="{% url 'mail:mailbox' 'sent' %}">Sent</a>
-            </li>
-            <li class="nav-item">
-              <a  id="archived1" data-link="archived" class="btn btn-outline-info" aria-current="page" href="{% url 'mail:mailbox' 'archived' %}">Archived</a>
+              <button  id="archived" class="btn btn-outline-warning" aria-current="page" data-link="{% url 'mail:api_mailbox' 'archived' %}">Archived</button>
             </li>
             {% if request.user.is_authenticated %} 
             <li class="nav-item">
