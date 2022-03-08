@@ -15,8 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const h1 = document.createElement('h1');
         h1.innerHTML = 'This is Inbox';
         main_body.append(h1);
-        fetch('mail/api/email/inbox')
-        .then(response => response.json())
+        fetch('/mail/api/email/inbox')
+        .then(response => console.log(response))
     }
 
     function show_compose() {

@@ -19,8 +19,8 @@ class Email(models.Model):
         context = {
             'id': self.id,
             'subject': self.subject,
-            'recipients': self.recipients,
-            'sender': self.sender,
+            'recipients': [user.email for user in self.recipients.all()],
+            'sender': self.sender.email,
             'content': self.content,
             'timestamp': self.timestamp,
             'archived': self.is_archived,
