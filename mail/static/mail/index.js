@@ -1,22 +1,40 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelector('#inbox').onclick = show_inbox;
-    document.querySelector('#compose').onclick = show_compose;
-    document.querySelector('#sent').onclick = show_sent;
-    document.querySelector('#archived').onclick = show_archived;
-    document.querySelector('#register').onclick = show_register;
-    document.querySelector('#login').onclick = show_login;
-    document.querySelector('#logout').onclick = show_logout;
+    // document.querySelector('#compose').onclick = show_compose;
+    // document.querySelector('#sent').onclick = show_sent;
+    // document.querySelector('#archived').onclick = show_archived;
+    // document.querySelector('#register').onclick = show_register;
+    // document.querySelector('#login').onclick = show_login;
+    // document.querySelector('#logout').onclick = show_logout;
 
 
     function show_inbox() {
-        const main_body = document.querySelector('#main_body');
+        let main_body = document.querySelector('#main_body');
         main_body.innerHTML = '';
-        const h1 = document.createElement('h1');
-        h1.innerHTML = 'This is Inbox';
-        main_body.append(h1);
         fetch('/mail/api/email/inbox')
-        .then(response => console.log(response))
+        .then(response => response.json())
+        .then(data => {
+            let ul = document.createElement('ul');
+            data.forEach(email => {
+                let li = document.createElement('li');
+                let subject = document.createElement('h4');
+                subject.innerHTML = email['subject'];
+                let timestamp = document.createElement('p');
+                timestamp.innerHTML = email['timestamp'];
+
+                let link = document.createElement('a');
+                link.append(subject);
+                link.href = `email/${email['id']}`;
+
+                li.append(link);
+                li.append(timestamp);  
+                ul.append(li);   
+                hr = document.createElement('hr');
+                ul.append(hr);
+            })
+            main_body.append(ul)
+        })
     }
 
     function show_compose() {

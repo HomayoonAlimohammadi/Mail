@@ -64,7 +64,6 @@ def mailbox(request, mailbox):
         return JsonResponse({"error": "Invalid mailbox."}, status=400)
 
     emails = [email.serialize() for email in emails.order_by('-timestamp').all()]
-    print(emails)
     return JsonResponse(emails, safe=False)
     # return JsonResponse(context, safe=False)
 
