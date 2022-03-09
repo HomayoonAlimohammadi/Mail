@@ -4,15 +4,17 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('#compose').onclick = show_compose;
     document.querySelector('#sent').onclick = show_sent;
     document.querySelector('#archived').onclick = show_archived;
-    document.querySelector('#register').onclick = show_register;
-    document.querySelector('#login').onclick = show_login;
-    document.querySelector('#logout').onclick = show_logout;
+    // document.querySelector('#register').onclick = show_register;
+    // document.querySelector('#login').onclick = show_login;
+    // document.querySelector('#logout').onclick = show_logout;
+    var redirect_link = document.querySelector('#inbox').dataset.redirect;
+
 
     function hide_all() {
         document.querySelector('#compose_div').style.display = 'none';
-        document.querySelector('#register_div').style.display = 'none';
-        document.querySelector('#login_div').style.display = 'none';
-        document.querySelector('#logout_div').style.display = 'none';
+        // document.querySelector('#register_div').style.display = 'none';
+        // document.querySelector('#login_div').style.display = 'none';
+        // document.querySelector('#logout_div').style.display = 'none';
         document.querySelector('#main_body').innerHTML = '';
 
     }
@@ -22,10 +24,14 @@ document.addEventListener('DOMContentLoaded', () => {
         hide_all();
         let main_body = document.querySelector('#main_body');
         let mailbox_link = document.querySelector('#inbox').dataset.link;
-        console.log(mailbox_link)
+        console.log(mailbox_link);
         fetch(mailbox_link)
         .then(response => response.json())
         .then(data => {
+            if (data.error) {
+                alert(data.error);
+                window.location.replace(redirect_link)
+            } else {
             let ul = document.createElement('ul');
             data.forEach(email => {
                 let li = document.createElement('li');
@@ -43,15 +49,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 ul.append(li);   
                 hr = document.createElement('hr');
                 ul.append(hr);
-            })
+            });
             main_body.append(ul);
+            }
         });
-    };
+    }
+
+
 
     function show_compose() {
         hide_all();
         document.querySelector('#compose_div').style.display = 'block';
-
     };
 
     function show_sent() {
@@ -62,6 +70,10 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch(mailbox_link)
         .then(response => response.json())
         .then(data => {
+            if (data.error) {
+                alert(data.error);
+                window.location.replace(redirect_link)
+            } else {
             let ul = document.createElement('ul');
             data.forEach(email => {
                 let li = document.createElement('li');
@@ -81,6 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 ul.append(hr);
             })
             main_body.append(ul);
+            }
         });
     };
 
@@ -92,6 +105,10 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch(mailbox_link)
         .then(response => response.json())
         .then(data => {
+            if (data.error) {
+                alert(data.error);
+                window.location.replace(redirect_link)
+            } else {
             let ul = document.createElement('ul');
             data.forEach(email => {
                 let li = document.createElement('li');
@@ -111,28 +128,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 ul.append(hr);
             })
             main_body.append(ul);
+            }
         });
     };
 
     function show_register() {
         hide_all();
-        const main_body = document.querySelector('#main_body');
-        main_body.innerHTML = 'This is Register';
-
+        document.querySelector('#register_div').style.display = 'block';
     }
 
     function show_login() {
         hide_all();
-        const main_body = document.querySelector('#main_body');
-        main_body.innerHTML = 'This is Login';
-
+        document.querySelector('#login_div').style.display = 'block';
     }
 
     function show_logout() {
         hide_all();
-        const main_body = document.querySelector('#main_body');
-        main_body.innerHTML = 'This is Logout';
-
+        document.querySelector('#logout_div').style.display = 'block';
     }
 
 });

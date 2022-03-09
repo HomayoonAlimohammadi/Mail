@@ -32,14 +32,16 @@ def index_view(request):
 # @login_required(login_url=reverse('mail:login'))
 def mailbox(request, mailbox):
     if not request.user.is_authenticated:
-        return redirect(reverse('mail:login'))
+        return JsonResponse(
+            {'error': 'You must log in first'}, status=401, safe=False
+        )
 
     if request.method != 'GET':
         context = {
             'error': 'Request must be GET' 
         }
         status = 400
-        return JsonResponse(context=context, status=status)
+        return JsonResponse(context, status)
     
     user = request.user
     if mailbox == 'inbox':

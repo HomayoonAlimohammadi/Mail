@@ -7,41 +7,10 @@ Email
 {% endblock %} 
 
 {% block head %} 
-<script src="{% static 'mail/index.js' %}"></script>
+<!-- <script src="{% static 'mail/index.js' %}"></script> -->
 {% endblock %} 
 
 
 {% block body %} 
-  <div id='main_body' class="container">
-    <p>This is the Index Page, User the navigation bar to proceed.</p>
-  </div>  
-  <div id="compose_div" class="container" style="display:none;" >
-    <form action="{% url 'mail:compose_view' %}" method="post">
-      {% csrf_token %} 
-      {{ compose_form|crispy }}
-      <button type="submit" class="btn btn-primary">Send</button>
-    </form>
-  </div>
-  <div id="register_div" class="container" style="display:none;">
-    <form action="{% url 'mail:register' %}" method="post">
-      {% csrf_token %} 
-      {{ register_form|crispy }}
-      <button type="submit" class="btn btn-primary">Register</button>
-    </form>
-    <p>Already have an email? <span style='color: blue;' id="register_to_login">Login</span>.</p>
-  </div>
-  <div id="login_div" class="container" style="display:none;">
-    <form action="{% url 'mail:login' %}" method="psot">
-      {% csrf_token %} 
-      {{ login_form|crispy }}
-      <button class="btn btn-primary">Login</button>
-    </form>
-    <p>Need an email? <span style="color:blue;" id="login_to_register">Register</span>.</p>
-  </div>
-  <div id="logout_div" class="container" style="display:none;">
-    <form action="{% url 'mail:logout' %}" method="post">
-      <button class="btn btn-primary" type="submit">Yes, Logout</button>
-      <button class="btn btn-primary" type="button">No</button>
-    </form>
-  </div>
+  
 {% endblock %} 
