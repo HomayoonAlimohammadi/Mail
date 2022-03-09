@@ -42,7 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 let link = document.createElement('a');
                 link.append(subject);
-                link.href = `email/${email['id']}`;
+                // link.href = `email/${email['id']}`;
+                link.onclick = show_email(email);
 
                 li.append(link);
                 li.append(timestamp);  
@@ -131,6 +132,29 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     };
+
+
+    function show_email(email) {
+        hide_all();
+        let main_body = document.querySelector('#main_body');
+        let subject = document.createElement('h5');
+        subject.innerHTML = `Subject : ${email.subject}`;
+        let sender = document.createElement('p');
+        sender.innerHTML = `From: ${email.sender}`;
+        let recipients = document.createElement('p');
+        recipients.innerHTML = 'To: <recipients>';
+        let content = document.createElement('p');
+        content.innerHTML = `Content: ${email.content}`;
+        let timestamp = document.createElement('p');
+        timestamp.innerHTML = `Sent at: ${email.timestamp}`;
+        main_body.append(subject);
+        main_body.append(sender);
+        main_body.append(recipients);
+        main_body.append(content);
+        main_body.append(timestamp);
+        
+    }
+
 
     function show_register() {
         hide_all();
