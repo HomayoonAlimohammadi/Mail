@@ -4,15 +4,23 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('#compose').onclick = show_compose;
     document.querySelector('#sent').onclick = show_sent;
     document.querySelector('#archived').onclick = show_archived;
-    // document.querySelector('#register').onclick = show_register;
-    // document.querySelector('#login').onclick = show_login;
-    // document.querySelector('#logout').onclick = show_logout;
+    document.querySelector('#register').onclick = show_register;
+    document.querySelector('#login').onclick = show_login;
+    document.querySelector('#logout').onclick = show_logout;
+
+    function hide_all() {
+        document.querySelector('#compose_div').style.display = 'none';
+        document.querySelector('#register_div').style.display = 'none';
+        document.querySelector('#login_div').style.display = 'none';
+        document.querySelector('#logout_div').style.display = 'none';
+        document.querySelector('#main_body').innerHTML = '';
+
+    }
 
 
     function show_inbox() {
-        document.querySelector('#compose_div').style.display = 'none';
+        hide_all();
         let main_body = document.querySelector('#main_body');
-        main_body.innerHTML = '';
         let mailbox_link = document.querySelector('#inbox').dataset.link;
         console.log(mailbox_link)
         fetch(mailbox_link)
@@ -41,15 +49,14 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function show_compose() {
-        main_body.innerHTML = '';
+        hide_all();
         document.querySelector('#compose_div').style.display = 'block';
 
     };
 
     function show_sent() {
-        document.querySelector('#compose_div').style.display = 'none';
+        hide_all();
         let main_body = document.querySelector('#main_body');
-        main_body.innerHTML = '';
         let mailbox_link = document.querySelector('#sent').dataset.link;
         console.log(mailbox_link);
         fetch(mailbox_link)
@@ -78,9 +85,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function show_archived() {
-        document.querySelector('#compose_div').style.display = 'none';
+        hide_all();
         let main_body = document.querySelector('#main_body');
-        main_body.innerHTML = '';
         let mailbox_link = document.querySelector('#archived').dataset.link;
         console.log(mailbox_link);
         fetch(mailbox_link)
@@ -109,27 +115,24 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function show_register() {
+        hide_all();
         const main_body = document.querySelector('#main_body');
-        main_body.innerHTML = '';
-        const h1 = document.createElement('h1');
-        h1.innerHTML = 'This is Register';
-        main_body.append(h1);
+        main_body.innerHTML = 'This is Register';
+
     }
 
     function show_login() {
+        hide_all();
         const main_body = document.querySelector('#main_body');
-        main_body.innerHTML = '';
-        const h1 = document.createElement('h1');
-        h1.innerHTML = 'This is Login';
-        main_body.append(h1);
+        main_body.innerHTML = 'This is Login';
+
     }
 
     function show_logout() {
+        hide_all();
         const main_body = document.querySelector('#main_body');
-        main_body.innerHTML = '';
-        const h1 = document.createElement('h1');
-        h1.innerHTML = 'This is Logout';
-        main_body.append(h1);
+        main_body.innerHTML = 'This is Logout';
+
     }
 
 });

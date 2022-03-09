@@ -38,7 +38,7 @@
           </div>
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a id='admin' class="btn btn-outline-info" aria-current="page" href="{% url 'admin:index' %}">Admin</a>
+              <a id='admin' class="btn btn-outline-info" aria-current="page" href="{% url 'admin:index' %}" target="_blank" rel="noreferrer noopener">Admin</a>
             </li>
             <li class="nav-item">
               <button id='inbox' data-link="{% url 'mail:api_mailbox' 'inbox' %}" class="btn btn-outline-warning" aria-current="page">Inbox</button>
@@ -54,14 +54,14 @@
             </li>
             {% if request.user.is_authenticated %} 
             <li class="nav-item">
-              <a  id="logout1" data-link="logout" class="btn btn-outline-info" aria-current="page" href="{% url 'mail:logout' %}">Logout</a>
+              <button id="logout" class="btn btn-outline-info" aria-current="page" data-link="{% url 'mail:logout' %}">Logout</button>
             </li>
             {% else %} 
             <li class="nav-item">
-              <a  id="register1" data-link="register" class="btn btn-outline-info" aria-current="page" href="{% url 'mail:register' %}">Register</a>
+              <button  id="register" class="btn btn-outline-info" aria-current="page" data-link="{% url 'mail:register' %}">Register</button>
             </li>
             <li class="nav-item">
-              <a  id="login1" data-link="login" class="btn btn-outline-info" aria-current="page" href="{% url 'mail:login' %}">Login</a>
+              <button  id="login" class="btn btn-outline-info" aria-current="page" data-link="{% url 'mail:login' %}">Login</button>
             </li>
             {% endif %}
             
