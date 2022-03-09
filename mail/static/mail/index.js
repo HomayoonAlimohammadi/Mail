@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelector('#inbox').onclick = show_inbox;
-    // document.querySelector('#compose').onclick = show_compose;
+    document.querySelector('#compose').onclick = show_compose;
     document.querySelector('#sent').onclick = show_sent;
     document.querySelector('#archived').onclick = show_archived;
     // document.querySelector('#register').onclick = show_register;
@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     function show_inbox() {
+        document.querySelector('#compose_div').style.display = 'none';
         let main_body = document.querySelector('#main_body');
         main_body.innerHTML = '';
         let mailbox_link = document.querySelector('#inbox').dataset.link;
@@ -40,13 +41,13 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function show_compose() {
-        const main_body = document.querySelector('#main_body');
         main_body.innerHTML = '';
-        let mailbox_link = document.querySelector('#compose').dataset.link;
+        document.querySelector('#compose_div').style.display = 'block';
 
     };
 
     function show_sent() {
+        document.querySelector('#compose_div').style.display = 'none';
         let main_body = document.querySelector('#main_body');
         main_body.innerHTML = '';
         let mailbox_link = document.querySelector('#sent').dataset.link;
@@ -77,6 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function show_archived() {
+        document.querySelector('#compose_div').style.display = 'none';
         let main_body = document.querySelector('#main_body');
         main_body.innerHTML = '';
         let mailbox_link = document.querySelector('#archived').dataset.link;

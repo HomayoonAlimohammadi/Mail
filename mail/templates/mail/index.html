@@ -15,15 +15,6 @@ Email
   <div id='main_body' class="container">
     <p>This is the Index Page, User the navigation bar to proceed.</p>
   </div>  
-  <div id="inbox_div" class="container" style="display:none;">
-
-  </div>
-  <div id="sent_div" class="container" style="display:none;">
-
-  </div>
-  <div id="archived_div" class="container" style="display:none;">
-
-  </div>
   <div id="compose_div" class="container" style="display:none;" >
     <form action="{% url 'mail:compose_view' %}" method="post">
       {% csrf_token %} 
