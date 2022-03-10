@@ -4,10 +4,12 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('#compose').onclick = show_compose;
     document.querySelector('#sent').onclick = show_sent;
     document.querySelector('#archived').onclick = show_archived;
+    document.querySelector('#compose_div').onsubmit = submit_compose;
     // document.querySelector('#register').onclick = show_register;
     // document.querySelector('#login').onclick = show_login;
     // document.querySelector('#logout').onclick = show_logout;
     var redirect_link = document.querySelector('#inbox').dataset.redirect;
+    var homepage_link = document.querySelector('#main_body').dataset.homepagelink;
 
 
     function hide_all() {
@@ -19,12 +21,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
 
+    function submit_compose() {
+        
+    }
+
 
     function show_inbox() {
+        if (window.location.pathname != homepage_link) {
+            window.location.replace(homepage_link);
+        }
         hide_all();
         let main_body = document.querySelector('#main_body');
         let mailbox_link = document.querySelector('#inbox').dataset.link;
-        console.log(mailbox_link);
         fetch(mailbox_link)
         .then(response => response.json())
         .then(data => {
@@ -42,8 +50,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 let link = document.createElement('a');
                 link.append(subject);
-                // link.href = `email/${email['id']}`;
-                link.onclick = show_email(email);
+                link.href = `email/${email['id']}`;
+                // link.onclick = show_email(email);
 
                 li.append(link);
                 li.append(timestamp);  
@@ -60,7 +68,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function show_compose() {
         hide_all();
-        document.querySelector('#compose_div').style.display = 'block';
+        let main_body = document.querySelector('#main_body');
+        let compose_link = document.querySelector('#compose').dataset.link;
+        fetch(compose_link)
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert(data.error);
+                window.location.replace(redirect_link);
+            } else {
+                document.querySelector('#compose_div').style.display = 'block';
+            }
+        })
     };
 
     function show_sent() {

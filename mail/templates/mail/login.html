@@ -12,5 +12,6 @@ Login
     {{ form|crispy }}
     <button class="btn btn-primary">Login</button>
 </form>
+<p>Need an account? <a href="{% url 'mail:register' %}"><strong>Register</strong></a></p>
 </div>
 {% endblock %} 

@@ -31,6 +31,7 @@ def index_view(request):
 
 # @login_required(login_url=reverse('mail:login'))
 def mailbox(request, mailbox):
+    print('mailbox is wanted')
     if not request.user.is_authenticated:
         return JsonResponse(
             {'error': 'You must log in first'}, status=401, safe=False
@@ -134,61 +135,75 @@ def compose_view(request):
 
 # @login_required(login_url=reverse('mail:login'))
 def compose(request):
-    if request.method != 'POST':
+    if not request.user.is_authenticated:
         return JsonResponse(
-            {'error': 'Request must be POST'},
-            status=402,
+            {'error': 'You need to Login first.'},
+            status=401
         )
-    
-    data = json.load(request.body)
-    subject = data.get('subject')
-    if subject is None:
-        return JsonResponse(
-            {'error': 'Subject can not be empty.'},
-            status=402,
-            )
-    content = data.get('content')
-    emails = [email.strip() for email in data.get('recipients').split(',')]
-    if not emails:
-        return JsonResponse(
-            {'error': 'Recipients can not be empty.'},
-            status=402,
-            )
+    if request.method == 'POST':
+        form = ComposeForm(request.POST)
+        if form.is_valid():
+            subject = form.cleaned_data['subject']
+            if subject is None:
+                return JsonResponse(
+                    {'error': 'Subject can not be empty!'},
+                    status=402
+                )
+            content = form.cleaned_data['content']
+            emails = [email.strip() for email in form.cleaned_data['recipients'].split(',')]
+            if not emails:
+                return JsonResponse(
+                        {'error': 'Recipients can not be None.'},
+                        status=402,
+                    )
 
-    recipients = []
-    for email in emails:
-        try:
-            user = User.objects.get(
-                email=email
-            )
-        except User.DoesNotExist:
+            recipients = []
+            for email in emails:
+                try:
+                    user = User.objects.get(
+                        email=email
+                    )
+                    if user == request.user:
+                        return JsonResponse(
+                        {'error': 'Cant send message to self!'},
+                        status=402,
+                        )
+                except User.DoesNotExist:
+                    return JsonResponse(
+                        {'error': 'Invalid email amongst recipients.'},
+                        status=402,
+                    )
+                recipients.append(user)
+            
+            users = set()
+            users.add(request.user)
+            users.update(recipients)
+            for user in users:
+                email = Email(
+                    subject = subject,
+                    content = content,
+                    user = user,
+                    sender = request.user,  
+                    is_read = request.user == user  
+                )    
+                email.save()
+                for recipient in recipients:
+                    email.recipients.add(recipient)
+                email.save()
+            
             return JsonResponse(
-                {'error': 'Invalid recipients'},
-                status=400,
+                {'success': 'Email has been sent successfully.'},
+                status=200,
             )
-        recipients.append(user)
+    return JsonResponse(
+        {'success': 'User can proceed'},
+        status=200
+    )
     
-    users = set()
-    users.add(request.user)
-    users.update(emails)
-    for user in users:
-        email = Email(
-            subject = subject,
-            content = content,
-            user = request.user,
-            sender = request.user,  
-            is_read = request.user == user  
-        )    
-        email.save()
-        for recipient in recipients:
-            email.recipients.add(recipient)
-        email.save()
-    
-    messages.success(request, 'Mail has been sent successfully.')
-    return redirect(reverse('mail:index'))
-
 
 def login_view(request):
+    if request.user.is_authenticated:
+        return redirect(reverse('mail:index'))
     form = LoginForm(request.POST or None)
     if request.method == 'POST':
         if form.is_valid():
