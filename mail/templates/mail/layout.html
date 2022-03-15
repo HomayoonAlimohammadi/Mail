@@ -91,10 +91,12 @@
         </div>
         {% endfor %} 
 
-        <div id="result">
+        <!-- Root div -->
+        <div id="root">
           
         </div>
- 
+        
+        <!-- Compose div -->
         <div id="compose_div" class="container" style="display:none;" >
           <form action="{% url 'mail:compose_view' %}" method="post">
             {% csrf_token %} 
@@ -102,6 +104,8 @@
             <button type="submit" class="btn btn-primary">Send</button>
           </form>
         </div>
+
+        <!-- Register div -->
         <div id="register_div" class="container" style="display:none;">
           <form action="{% url 'mail:register' %}" method="post">
             {% csrf_token %} 
@@ -110,6 +114,8 @@
           </form>
           <p>Already have an email? <span style='color: blue;' id="register_to_login">Login</span>.</p>
         </div>
+
+        <!-- Login div  -->
         <div id="login_div" class="container" style="display:none;">
           <form action="{% url 'mail:login' %}" method="psot">
             {% csrf_token %} 
@@ -118,6 +124,8 @@
           </form>
           <p>Need an email? <span style="color:blue;" id="login_to_register">Register</span>.</p>
         </div>
+
+        <!-- Logout div  -->
         <div id="logout_div" class="container" style="display:none;">
           <p>You are Logged in as <strong>request.user.username</strong><br/>
           Are you Sure you want to log out?</p>
@@ -126,6 +134,7 @@
             <button class="btn btn-primary" type="button">No</button>
           </form>
         </div>
+
         <div id='main_body' class="container" data-homepagelink="{% url 'mail:index' %}">
         {% block body %} 
         {% endblock %}
