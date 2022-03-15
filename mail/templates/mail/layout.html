@@ -13,6 +13,7 @@
         <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
         <script src="{% static 'mail/index_new.js' %}" type="text/babel"></script>
+        <link href="{% static 'mail/styles.css' %}" rel="stylesheet" />
         
         <title>
             {% block title %} 
@@ -64,14 +65,14 @@
             </li>
             {% if request.user.is_authenticated %} 
             <li class="nav-item">
-              <a id="logout" class="btn btn-outline-info" aria-current="page" href="{% url 'mail:logout' %}">Logout</a>
+              <button id="logout" class="btn btn-outline-info" aria-current="page" data-link="{% url 'mail:logout' %}">Logout</button>
             </li>
             {% else %} 
             <li class="nav-item">
-              <a  id="register" class="btn btn-outline-info" aria-current="page" href="{% url 'mail:register' %}">Register</a>
+              <button  id="register" class="btn btn-outline-info" aria-current="page" data-link="{% url 'mail:register' %}">Register</button>
             </li>
             <li class="nav-item">
-              <a  id="login" class="btn btn-outline-info" aria-current="page" href="{% url 'mail:login' %}">Login</a>
+              <button id="login" class="btn btn-outline-info" aria-current="page" data-link="{% url 'mail:login' %}">Login</button>
             </li>
             {% endif %}
             
@@ -90,7 +91,7 @@
         </div>
         {% endfor %} 
 
-        <div id="app">
+        <div id="result">
           
         </div>
  
