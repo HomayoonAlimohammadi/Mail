@@ -1,5 +1,6 @@
 function handleClick(event) {
     console.log(event.target.tagName, event.target.parentElement.className)
+    // navigation buttons click handle:
     if (event.target.tagName === 'BUTTON' && event.target.parentElement.className === 'nav-item') {
         if (event.target.id === 'compose') {
             composeClick(event)
@@ -12,7 +13,8 @@ function handleClick(event) {
         } else {
             mailboxClick(event)
         }
-    } else if (event.target.parentElement.className === 'result-item') {
+    // result emails click handle:
+    } else if (event.target.className === 'result-item' || event.target.parentElement.className === 'result-item') {
         emailClick(event)
     } else {
         console.log('something else was clicked')
@@ -95,8 +97,43 @@ async function mailboxClick(event) {
     renderMailbox(result)
 }
 
+
+async function getEmail(emailId) {
+    const message = `This is Email: ${emailId}`
+    const response = await fetch(`api/email/${emailId}`, {})
+    const result = await response.json()
+
+    return result
+}
+
 async function emailClick(event) {
     console.log("Email was Clicked")
+    const emailId = event.target.id
+    console.log(`Email key is ${emailId}`)
+    const result = await getEmail(emailId)
+    renderEmail(result.email)
+}
+
+async function renderEmail(email) {
+    console.log(`email: ${email.subject}`)
+    function Email() {
+
+        return (
+            <div className="container py-3">
+                <h5>{email.subject}</h5>
+                <p><b>From: </b>{email.sender}</p>
+                <p><b>To: </b>{email.recipients}</p>
+                <b>Content:</b>
+                <p>{email.content}</p>
+                <hr />
+                <p>Sent at: {email.timestamp}</p>
+                <button type="button" className="btn btn-primary">Archive</button>
+                <button type="button" className="btn btn-primary">Reply</button>
+                <button type="button" className="btn btn-outline-primary">Delete</button>
+            </div>
+        )
+    }
+    ReactDOM.render(<Email />, document.querySelector('#root'))
 }
 
 
@@ -121,8 +158,8 @@ function renderMailbox(props) {
             <div className='container'>
                 <ul className="result-list">
                     {props.emails.map(email => (
-                        <li key={email.id} className="result-item">
-                            <b>{email.subject}</b><br/>
+                        <li key={email.id} id={email.id} className="result-item">
+                            <b id={email.id}>{email.subject}</b><br/>
                             From: {email.sender}, at: {email.timestamp}
                         </li>
                     ))}
