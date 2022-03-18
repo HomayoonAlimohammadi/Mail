@@ -270,7 +270,13 @@ def email_view(request, id):
 def email(request, id):
     email = get_object_or_404(Email, id=id) 
     if request.method == 'PUT':
-        email.is_read = True
+        # email.is_read = True
+        # email.save()
+        body = json.loads(str(request.body, 'utf-8'))
+        if body.get('read') is not None:
+            email.is_read = body['read']
+        if body.get('archived') is not None:
+            email.is_archived = body['archived']
         email.save()
         return JsonResponse(
             {'message': 'Email was marked as Read'},

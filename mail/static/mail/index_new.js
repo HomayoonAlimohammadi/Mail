@@ -1,17 +1,39 @@
 function handleClick(event) {
     console.log(event.target.tagName, event.target.parentElement.className)
     // navigation buttons click handle:
-    if (event.target.tagName === 'BUTTON' && event.target.parentElement.className === 'nav-item') {
-        if (event.target.id === 'compose') {
-            composeClick(event)
-        } else if (event.target.id === 'logout') {
-            logoutClick(event)
-        } else if (event.target.id === 'login') {
-            loginClick(event)
-        } else if (event.target.id === 'register') {
-            registerClick(event)
+    if (event.target.tagName === 'BUTTON') {
+        if (event.target.parentElement.className === 'nav-item') {
+            if (event.target.id === 'compose') {
+                composeClick(event)
+            } else if (event.target.id === 'logout') {
+                logoutClick(event)
+            } else if (event.target.id === 'login') {
+                loginClick(event)
+            } else if (event.target.id === 'register') {
+                registerClick(event)
+            } else {
+                mailboxClick(event)
+            }
         } else {
-            mailboxClick(event)
+            if (event.target.id === 'archive') {
+                archiveClick(event)
+            } else if (event.target.id === 'reply') {
+                console.log('reply was clicked')
+            } else if (event.target.id === 'delete') {
+                console.log('delete was clicked')
+            } else if (event.target.id === 'submitCompose') {
+                console.log('submit compose was clicked')
+            } else if (event.target.id === 'submitReply') {
+                console.log('submit reply was clicked')
+            } else if (event.target.id === 'submitLogin') {
+                console.log('submit login was clicked')
+            } else if (event.target.id === 'submitLogout') {
+                console.log('submit logout was clicked')
+            } else if (event.target.id === 'submitRegister') {
+                console.log('submit register was clicked')
+            } else if (event.target.id === 'cancelLogout') {
+                console.log('cancel logoout was clicked')
+            }
         }
     // result emails click handle:
     } else if (event.target.className === 'result-item' || event.target.parentElement.className === 'result-item') {
@@ -39,17 +61,35 @@ function getCookie(name) {
     return cookieValue;
 }
 
+function archiveClick(event) {
+    console.log(event.target.id)
+}
+
+async function archiveEmail(emailId) {
+    const csrftoken =   getCookie('csrftoken') 
+    const response = await fetch(`api/email/${emailId}`, {
+        method: 'PUT',
+        headers: {'X-CSRFToken': csrftoken},
+        mode: 'same-origin',
+        body: JSON.stringify({
+            archived: true
+        })
+    })
+    const result = await response.json()
+    console.log(result.message)
+}
+
 
 function composeClick(event) {
     console.log('Compose was Clicked')
     function Compose() {
         return (
             <div className="container">
-                <label for="subject">Subject:</label>
+                <label htmlFor="subject">Subject:</label>
                 <input type="text" name="subject" id="subject" className="form-control" />
-                <label for="content">Content:</label>
+                <label htmlFor="content">Content:</label>
                 <textarea name="content" id="content" rows="4" cols="10" className="form-control"/>
-                <label for="recipients">Recipients:</label>
+                <label htmlFor="recipients">Recipients:</label>
                 <input type="text" name="recipients" id="recipients" className="form-control" />
                 <button type="submit" className="btn btn-primary" id="submitCompose">Submit</button>
             </div>
@@ -81,9 +121,9 @@ function loginClick(event) {
     function Login() {
         return (
             <div className="container">
-                <label for="email">Email:</label>
+                <label htmlFor="email">Email:</label>
                 <input type="text" name="email" className="form-control"/>
-                <label for="password">Password:</label>
+                <label htmlFor="password">Password:</label>
                 <input type="password" name="password" className="form-control"/>
                 <button type="submit" className="btn btn-primary" id="submitLogin">Login</button>
             </div>
@@ -97,13 +137,13 @@ function registerClick(event) {
     function Register() {
         return (
             <div className="container">
-                <label for="email">Email:</label>
+                <label htmlFor="email">Email:</label>
                 <input type="text" name="email" className="form-control"/>
-                <label for="password">Password:</label>
+                <label htmlFor="password">Password:</label>
                 <input type="password" name="password" className="form-control"/>
-                <label for="confirmation">Confirm Password:</label>
+                <label htmlFor="confirmation">Confirm Password:</label>
                 <input type="password" name="confirmation" className="form-control"/>
-                <button type="submit" className="btn btn-primary" id="submitLogin">Register</button>
+                <button type="submit" className="btn btn-primary" id="submitRegister">Register</button>
             </div>
         )
     }
@@ -117,18 +157,17 @@ async function mailboxClick(event) {
 }
 
 async function markEmailasRead(emailId) {
-    console.log('email is going to be read')
     const csrftoken =   getCookie('csrftoken') 
     const response = await fetch(`api/email/${emailId}`, {
         method: 'PUT',
         headers: {'X-CSRFToken': csrftoken},
         mode: 'same-origin',
         body: JSON.stringify({
-            archived: true
+            read: true
         })
     })
     const result = await response.json()
-    console.log('result: ', result)
+    console.log(result.message)
 }
 
 async function getEmail(emailId) {
@@ -138,11 +177,22 @@ async function getEmail(emailId) {
     return result
 }
 
+function updateWindowState(update) {
+    const root = document.querySelector('#root').innerHTML
+    history.pushState({root: root}, '', `${update}`)
+}
+
+window.onpopstate = function(event) {
+    showSection(event.state.root)
+}
+
+
 async function emailClick(event) {
     console.log("Email was Clicked")
     const emailId = event.target.id
     console.log(`Email key is ${emailId}`)
     const result = await getEmail(emailId)
+    updateWindowState(emailId)
     renderEmail(result.email)
 }
 
@@ -159,9 +209,9 @@ async function renderEmail(email) {
                 <p>{email.content}</p>
                 <hr />
                 <p>Sent at: {email.timestamp}</p>
-                <button type="button" className="btn btn-primary">Archive</button>
-                <button type="button" className="btn btn-primary">Reply</button>
-                <button type="button" className="btn btn-outline-primary">Delete</button>
+                <button type="button" id="archive" className="btn btn-primary">Archive</button>
+                <button type="button" id="reply" className="btn btn-primary">Reply</button>
+                <button type="button" id="delete" className="btn btn-outline-primary">Delete</button>
             </div>
         )
     }
@@ -206,3 +256,8 @@ function renderMailbox(props) {
 
 
 document.addEventListener('click', handleClick)
+
+
+function showSection(root) {
+    document.querySelector('#root').innerHTML = root
+}
