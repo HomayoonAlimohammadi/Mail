@@ -21,6 +21,25 @@ function handleClick(event) {
     }
 }
 
+
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+
 function composeClick(event) {
     console.log('Compose was Clicked')
     function Compose() {
@@ -97,12 +116,25 @@ async function mailboxClick(event) {
     renderMailbox(result)
 }
 
+async function markEmailasRead(emailId) {
+    console.log('email is going to be read')
+    const csrftoken =   getCookie('csrftoken') 
+    const response = await fetch(`api/email/${emailId}`, {
+        method: 'PUT',
+        headers: {'X-CSRFToken': csrftoken},
+        mode: 'same-origin',
+        body: JSON.stringify({
+            archived: true
+        })
+    })
+    const result = await response.json()
+    console.log('result: ', result)
+}
 
 async function getEmail(emailId) {
-    const message = `This is Email: ${emailId}`
     const response = await fetch(`api/email/${emailId}`, {})
     const result = await response.json()
-
+    markEmailasRead(emailId)
     return result
 }
 

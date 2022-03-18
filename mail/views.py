@@ -266,13 +266,22 @@ def email_view(request, id):
     }        
     return render(request, 'mail/email.html', context)
 
-def getEmail(request, id):
+
+def email(request, id):
     email = get_object_or_404(Email, id=id) 
-    email = email.serialize()       
-    return JsonResponse(
-        {'email': email},
-        status=200,
-    )
+    if request.method == 'PUT':
+        email.is_read = True
+        email.save()
+        return JsonResponse(
+            {'message': 'Email was marked as Read'},
+            status=201
+        )
+    elif request.method == 'GET':
+        email = email.serialize()       
+        return JsonResponse(
+            {'email': email},
+            status=200,
+        )
 
 
 def delete_email_view(request, id):
