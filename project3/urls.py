@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from mail.views import index_view
+from .views import index_view
 
 
 app_name = 'main'
