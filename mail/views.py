@@ -314,7 +314,37 @@ def toggle_archive_email_view(request, id):
         email.is_archived = True
         email.save()
     return redirect(reverse('mail:email', args=[id]))
-    
+
+
+def loginAPI(request):
+
+    # This section should not be needed
+    # due to the "display: none" in layout
+    # in case a user is signed in.
+    if request.user.is_authenticated:
+        return JsonResponse(
+            {'message': 'Logged in successfully'},
+            status = 200
+        )
+    if request.method == 'POST':
+        credentials = json.loads(str(request.body, 'utf-8'))
+        username = credentials.get('username')
+        password = credentials.get('password')
+        user = authenticate(username=username, password=password)
+        print(user)
+        if user:
+            login(request, user)
+            return JsonResponse(
+                {'message': 'Logged in successfully'},
+                status = 200
+            )
+        else:
+            return JsonResponse(
+                {'error': 'Invalid Credentials.'},
+                status = 401
+            )
+    print('end of login')
+
 
     
     

@@ -45,7 +45,11 @@
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
               <a id='admin' aria-current="page" href="{% url 'admin:index' %}" target="_blank" 
-                rel="noreferrer noopener" style="text-decoration: none; color: inherit;"><button class="btn btn-outline-info" {% if not request.user.is_authenticated %}disabled{% endif %}>Admin</button></a>
+                rel="noreferrer noopener" style="text-decoration: none; color: inherit;">
+                <button class="btn btn-outline-info">
+                  Admin
+                </button>
+              </a>
             </li>
             <li class="nav-item">
               <button id='inbox' data-link="{% url 'mail:api_mailbox' 'inbox' %}" class="btn btn-outline-warning" aria-current="page"

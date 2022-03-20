@@ -8,7 +8,7 @@ function handleClick(event) {
             } else if (event.target.id === 'logout') {
                 logoutClick(event)
             } else if (event.target.id === 'login') {
-                loginClick(event)
+                loginClick({})
             } else if (event.target.id === 'register') {
                 registerClick(event)
             } else {
@@ -27,10 +27,12 @@ function handleClick(event) {
                 console.log('submit reply was clicked')
             } else if (event.target.id === 'submitLogin') {
                 console.log('submit login was clicked')
+                submitLogin(event)
             } else if (event.target.id === 'submitLogout') {
                 console.log('submit logout was clicked')
             } else if (event.target.id === 'submitRegister') {
                 console.log('submit register was clicked')
+                submitRegister(event)
             } else if (event.target.id === 'cancelLogout') {
                 console.log('cancel logoout was clicked')
             }
@@ -43,6 +45,58 @@ function handleClick(event) {
     }
 }
 
+
+function submitRegister(event) {
+    let username = document.querySelector('#username').value
+    let password = document.querySelector('#password').value
+    let confirmation = document.querySelector('#confirmation').value
+    let credentials = {
+        'username': username,
+        'password': password,
+        'confirmation': confirmation
+    }
+    registerUser(credentials);
+    
+}
+
+function submitLogin(event) {
+    let username = document.querySelector('#username').value
+    let password = document.querySelector('#password').value
+    let credentials = {
+        'username': username,
+        'password': password
+    }
+    loginUser(credentials)
+
+}
+
+async function registerUser(credentials) {
+    console.log('regsitering user:', credentials)
+    // Registering via API 
+    loginUser(credentials)
+}
+
+async function loginUser(credentials) {
+    console.log('logging in user:', credentials)
+    // Logging in via API 
+
+    // Rendering Inbox after logging in
+    const csrftoken = getCookie('csrftoken') 
+    const response = await fetch('api/email/login', {
+        method: 'POST',
+        headers: {'X-CSRFToken': csrftoken},
+        mode: 'same-origin',
+        body: JSON.stringify(credentials)
+    })
+    const result = await response.json()
+    // const result = await getMailbox('inbox')
+    console.log(result)
+    if (result.error) {
+        loginClick(result)
+    }
+    // document.location.reload()
+    // renderMailbox(result)
+}
 
 
 function getCookie(name) {
@@ -117,14 +171,17 @@ function logoutClick(event) {
 }
 
 function loginClick(event) {
+
     console.log('Login was clicked')
+
     function Login() {
         return (
             <div className="container">
-                <label htmlFor="email">Email:</label>
-                <input type="text" name="email" className="form-control"/>
+                <h4>{event.error}</h4>
+                <label htmlFor="username">Email:</label>
+                <input type="text" id="username" name="username" className="form-control"/>
                 <label htmlFor="password">Password:</label>
-                <input type="password" name="password" className="form-control"/>
+                <input type="password" id="password" name="password" className="form-control"/>
                 <button type="submit" className="btn btn-primary" id="submitLogin">Login</button>
             </div>
         )
@@ -137,12 +194,12 @@ function registerClick(event) {
     function Register() {
         return (
             <div className="container">
-                <label htmlFor="email">Email:</label>
-                <input type="text" name="email" className="form-control"/>
+                <label htmlFor="username">Email:</label>
+                <input type="text" id="username" name="username" className="form-control"/>
                 <label htmlFor="password">Password:</label>
-                <input type="password" name="password" className="form-control"/>
+                <input type="password" id="password" name="password" className="form-control"/>
                 <label htmlFor="confirmation">Confirm Password:</label>
-                <input type="password" name="confirmation" className="form-control"/>
+                <input type="password" id="confirmation" name="confirmation" className="form-control"/>
                 <button type="submit" className="btn btn-primary" id="submitRegister">Register</button>
             </div>
         )

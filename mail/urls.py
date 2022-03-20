@@ -14,6 +14,7 @@ urlpatterns = [
     # path('<str:mailbox>/', mailbox_view, name='mailbox'),
 
     # API Views
+    path('api/email/login', loginAPI, name='api_login'),
     path('api/email/compose', compose, name='api_compose'),
     path('api/email/<int:id>', email, name='api_email'),
     path('api/email/<str:mailbox>', mailbox, name='api_mailbox'),
