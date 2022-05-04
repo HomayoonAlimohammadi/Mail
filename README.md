@@ -15,6 +15,7 @@
   All the communication with the server is made through a custome made <b>API</b><br/>
   This Web App was built using <b>Django, HTML, CSS, JavaScript</b> and <b>React</b>
 </p>
+
 ## Key Features:
 - <b>API</b> driven views.
 - <b>Single Page Application</b>, thus consuming less resources.
