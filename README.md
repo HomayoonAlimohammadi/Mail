@@ -25,9 +25,9 @@
 - Full control over emails.
 - Interactive and Responsive UI.
 
-### Feel free to send my any feedbacks regarding this project!
+### Feel free to send my any feedbacks regarding this project![](../../../../../../../../HomayoonAlimohammadi/Mail/blob/main/images/login.png)
   
-![Login](https://github.com/HomayoonAlimohammadi/Mail/blob/main/images/login.jpg?raw=true)
-![Register](https://github.com/HomayoonAlimohammadi/Mail/blob/main/images/register.jpg?raw=true)
-![Compose](https://github.com/HomayoonAlimohammadi/Mail/blob/main/images/compose.jpg?raw=true)
-![Logout](https://github.com/HomayoonAlimohammadi/Mail/blob/main/images/logout.jpg?raw=true)
+![Login](https://github.com/HomayoonAlimohammadi/Mail/blob/main/images/login.png?raw=true)
+![Register](https://github.com/HomayoonAlimohammadi/Mail/blob/main/images/register.png?raw=true)
+![Compose](https://github.com/HomayoonAlimohammadi/Mail/blob/main/images/compose.png?raw=true)
+![Logout](https://github.com/HomayoonAlimohammadi/Mail/blob/main/images/logout.png?raw=true)
