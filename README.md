@@ -1,8 +1,8 @@
 # Email App
 ### This Web App was an attemp to build custome APIs and Single Page Applications.
 <p align="center">
-<img align=center src="https://img.shields.io/badge/Python-informational?style=flat&logo=Python&logoColor=1f63a6&color=ffff19" />
-<img align=center src="https://img.shields.io/badge/Django-informational?style=flat&logo=Django&logoColor=044a16&color=white" />
+<img align=center src="https://img.shields.io/badge/Python-informational?style=flat&logo=Python&logoColor=1f63a6&color=292A2D" />
+<img align=center src="https://img.shields.io/badge/Django-informational?style=flat&logo=Django&logoColor=044a16&color=292A2D" />
 <img align=center src="https://img.shields.io/badge/HTML-informational?style=flat&logo=HTML5&logoColor=E34F26&color=292A2D" />
 <img align=center src="https://img.shields.io/badge/CSS-informational?style=flat&logo=CSS3&logoColor=1572B6&color=292A2D" /><br/>
 <img align=center src="https://img.shields.io/badge/JavaScript-informational?style=flat&logo=JavaScript&logoColor=ffeb14&color=292A2D" />
